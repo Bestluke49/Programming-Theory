@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Grabbable : MonoBehaviour
 {
-    public float speed;
+    public float speed, distanceScreen;
     public bool onConveyor = false;
+    public Vector3 dragOffset;
+
+    private void Awake()
+    {
+        distanceScreen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+    }
 
     private void Update()
     {
@@ -25,6 +31,9 @@ public class Grabbable : MonoBehaviour
     private void OnMouseDown()
     {
         SetGravity(false);
+        onConveyor = false;
+        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceScreen));
+        dragOffset = transform.position - pos;
     }
 
     void OnMouseDrag()
@@ -35,6 +44,7 @@ public class Grabbable : MonoBehaviour
     private void OnMouseUp()
     {
         SetGravity(true);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
     
     void MoveRight()
@@ -60,10 +70,16 @@ public class Grabbable : MonoBehaviour
 
     void Drag()
     {
-        while (!onConveyor)
+        if (!onConveyor)
         {
-            float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+            Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceScreen));
+            transform.position = pos + dragOffset;
+            if (transform.position.y < -1.815f)
+            {
+                transform.position = new(transform.position.x, -1.814f, transform.position.z);
+                onConveyor = true;
+                SetGravity(true);
+            }
         }        
     }
 }
