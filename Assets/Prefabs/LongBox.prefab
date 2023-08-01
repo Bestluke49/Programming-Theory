@@ -60,8 +60,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: LongBox
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1572992987542381469, guid: d08b3a71b6600364498dc799b7905232, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8679613284283611939, guid: d08b3a71b6600364498dc799b7905232, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -298874642472879602}
   m_SourcePrefab: {fileID: 100100000, guid: d08b3a71b6600364498dc799b7905232, type: 3}
+--- !u!1 &74927501168640114 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8679613284283611939, guid: d08b3a71b6600364498dc799b7905232, type: 3}
+  m_PrefabInstance: {fileID: 8754465932726565713}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-298874642472879602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74927501168640114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a409eab46f88d147be7d0eee91790ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.4
+  screenDistance: 0
+  onConveyor: 0
+  onSorter: 0
+  dragOffset: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  targetLongBox: {fileID: 0}

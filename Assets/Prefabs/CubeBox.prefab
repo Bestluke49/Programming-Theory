@@ -54,10 +54,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8679613284283611939, guid: d08b3a71b6600364498dc799b7905232, type: 3}
       propertyPath: m_Name
-      value: Box
+      value: CubeBox
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1572992987542381469, guid: d08b3a71b6600364498dc799b7905232, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8679613284283611939, guid: d08b3a71b6600364498dc799b7905232, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3242507647723247724}
   m_SourcePrefab: {fileID: 100100000, guid: d08b3a71b6600364498dc799b7905232, type: 3}
+--- !u!1 &4772729721388029836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8679613284283611939, guid: d08b3a71b6600364498dc799b7905232, type: 3}
+  m_PrefabInstance: {fileID: 4199617847912311983}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3242507647723247724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4772729721388029836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b3003af4b172f46b9629773cf82824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.4
+  screenDistance: 0
+  onConveyor: 0
+  onSorter: 0
+  dragOffset: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  targetCubeBox: {fileID: 0}

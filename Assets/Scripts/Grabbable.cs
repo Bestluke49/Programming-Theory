@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Grabbable : MonoBehaviour
 {
-    public float speed, screenDistance;
-    public bool onConveyor = false, onSorter = false;
-    public Vector3 dragOffset;
-    public Rigidbody rb;
+    [SerializeField]
+    private float speed; 
+    private float screenDistance;
+    private bool onConveyor = false, onSorter = false;
+    private Vector3 dragOffset;
+    private Rigidbody rb;
 
     private void Awake()
     {
@@ -100,7 +102,7 @@ public class Grabbable : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
-    void IsOnSorter(Collider other, bool IsOnSorter)
+    public virtual void IsOnSorter(Collider other, bool IsOnSorter)
     {
         if (other.gameObject.CompareTag("Sorter"))
         {
