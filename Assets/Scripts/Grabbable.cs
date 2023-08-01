@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Grabbable : MonoBehaviour
 {
-    public float speed, distanceScreen;
-    public bool onConveyor = false;
+    public float speed, screenDistance;
+    public bool onConveyor = false, onSorter = false;
     public Vector3 dragOffset;
+    public Rigidbody rb;
 
     private void Awake()
     {
-        distanceScreen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+        screenDistance = GetScreenDistance();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -20,21 +22,24 @@ public class Grabbable : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        IsOnConveyor(collision, true);
+        OnPhysicalCollision(collision);
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        IsOnConveyor(collision, false);
+        Dispose(other);
+        IsOnSorter(other, true);
+    }    
+
+    private void OnTriggerExit(Collider other)
+    {
+        IsOnSorter(other, false);
     }
 
     private void OnMouseDown()
     {
-        SetGravity(false);
-        onConveyor = false;
-        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceScreen));
-        dragOffset = transform.position - pos;
-    }
+        PickUp();
+    }    
 
     void OnMouseDrag()
     {
@@ -43,8 +48,16 @@ public class Grabbable : MonoBehaviour
 
     private void OnMouseUp()
     {
-        SetGravity(true);
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        Drop();
+    }
+
+    void Drop()
+    {
+        rb.velocity = Vector3.zero;
+        if (onSorter)
+        {
+            Destroy(gameObject);
+        }
     }
     
     void MoveRight()
@@ -55,31 +68,58 @@ public class Grabbable : MonoBehaviour
         }
     }
 
-    void IsOnConveyor(Collision collision, bool isOnConveyor)
+    void OnPhysicalCollision(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Conveyor"))
+        if (collision.gameObject.CompareTag("Conveyor") || collision.gameObject.CompareTag("Grabbable"))
         {
-            onConveyor = isOnConveyor;
+            StopDrag();
         }
-    }
-
-    void SetGravity(bool feelsGrav)
-    {
-        GetComponent<Rigidbody>().useGravity = feelsGrav;
     }
 
     void Drag()
     {
         if (!onConveyor)
         {
-            Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceScreen));
+            Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenDistance));
             transform.position = pos + dragOffset;
             if (transform.position.y < -1.815f)
             {
                 transform.position = new(transform.position.x, -1.814f, transform.position.z);
-                onConveyor = true;
-                SetGravity(true);
             }
         }        
+    }
+
+    float GetScreenDistance()
+    {
+        return Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+    }
+
+    void StopDrag()
+    {
+        onConveyor = true;
+        rb.velocity = Vector3.zero;
+    }
+
+    void IsOnSorter(Collider other, bool IsOnSorter)
+    {
+        if (other.gameObject.CompareTag("Sorter"))
+        {
+            onSorter = IsOnSorter;
+        }
+    }
+
+    void Dispose(Collider other)
+    {
+        if (other.gameObject.CompareTag("Disposer"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void PickUp()
+    {
+        onConveyor = false;
+        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenDistance));
+        dragOffset = transform.position - pos;
     }
 }
